@@ -158,8 +158,7 @@ def create_heat_chart(room_heat_summary_df, fig_width, fig_height, font_size, y_
         label_active = "投入熱量"
         passive = room_heat_summary_df[room_heat_summary_df['処理熱量[W]'] < 0].set_index('室名')['処理熱量[W]'].abs()
         active = room_heat_summary_df[room_heat_summary_df['処理熱量[W]'] > 0].set_index('室名')['処理熱量[W]']
-
-    else:
+   else: 
         label_passive = "各室負荷"
         label_active = "処理熱量"
         passive = room_heat_summary_df[room_heat_summary_df['処理熱量[W]'] > 0].set_index('室名')['処理熱量[W]']
@@ -496,6 +495,7 @@ if st.session_state['analyzed']:
 else:
 
         st.error("有効なデータが作成されませんでした。ログを確認してください。")
+
 
 
 
