@@ -5,17 +5,7 @@ import itertools
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import io
-
-# --- フォント設定 (環境に合わせて自動切替) ---
-try:
-    import japanize_matplotlib
-except ImportError:
-    # ライブラリがない場合はWindows標準フォントなどを試す
-    import platform
-    if platform.system() == "Windows":
-        plt.rcParams['font.family'] = 'Meiryo'
-    elif platform.system() == "Darwin": # Mac
-        plt.rcParams['font.family'] = 'Hiragino Sans'
+import japanize_matplotlib
 
 # ==========================================
 # 1. 関数定義
@@ -485,4 +475,5 @@ if st.session_state['analyzed']:
         st.dataframe(room_flow_df)
 
 else:
+
         st.error("有効なデータが作成されませんでした。ログを確認してください。")
