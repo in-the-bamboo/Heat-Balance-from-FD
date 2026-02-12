@@ -164,7 +164,7 @@ def create_heat_chart(room_heat_summary_df, fig_width, fig_height, font_size, y_
         passive = room_heat_summary_df[room_heat_summary_df['処理熱量[W]'] > 0].set_index('室名')['処理熱量[W]']
         active = room_heat_summary_df[room_heat_summary_df['処理熱量[W]'] < 0].set_index('室名')['処理熱量[W]'].abs
         
-    plot_df_base = pd.DataFrame({label_passive: passive , label_active: active}).T.fillna(0)
+plot_df_base = pd.DataFrame({label_passive: passive , label_active: active}).T.fillna(0)
 
     # --- 並べ替えロジック (引数の category_map を使用) ---
     # マップ内のリストを展開して、並べ替え順序リストを作成
@@ -495,6 +495,7 @@ if st.session_state['analyzed']:
 else:
 
         st.error("有効なデータが作成されませんでした。ログを確認してください。")
+
 
 
 
