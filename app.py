@@ -253,8 +253,8 @@ def create_heat_chart(room_heat_summary_df, fig_width, fig_height, font_size, y_
 
         ax.legend(handles=new_handles, labels=new_labels, bbox_to_anchor=(1.02, 1), loc='upper left', fontsize=font_size*0.9)
 
-    total_pos = pos_data.sum()
-    total_neg = neg_data.sum()
+    total_pos = passive.sum()
+    total_neg = active.sum()
     
     return fig, total_pos, total_neg
 
@@ -495,6 +495,7 @@ if st.session_state['analyzed']:
 else:
 
         st.error("有効なデータが作成されませんでした。ログを確認してください。")
+
 
 
 
