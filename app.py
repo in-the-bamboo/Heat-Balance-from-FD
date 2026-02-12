@@ -320,7 +320,7 @@ if st.session_state['analyzed']:
             else: st.info(log)
 
     # --- タブによる表示切り替え ---
-    tab1, tab2, tab3 = st.tabs(["風量バランス判定", "熱量分配グラフ", "計算詳細"])
+    tab1, tab2, tab3 = st.tabs(["風量収支チェック", "熱量分配グラフ", "計算詳細"])
 
     # --- Tab 1: 風量バランス ---
     with tab1:
@@ -347,7 +347,7 @@ if st.session_state['analyzed']:
 
  # --- Tab 2: グラフ ---
     with tab2:
-        st.subheader("室ごとの熱収支積み上げ")
+        st.subheader("各室およびエアコンの空調処理熱量")
 
         # データに含まれる全室名を取得
         all_rooms = sorted(room_heat_df['室名'].unique())
@@ -477,4 +477,5 @@ if st.session_state['analyzed']:
 else:
 
         st.error("有効なデータが作成されませんでした。ログを確認してください。")
+
 
