@@ -5,7 +5,7 @@ import itertools
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import io
-import japanize_matplotlib
+import matplotlib_fontja
 
 # ==========================================
 # 1. 関数定義
@@ -477,3 +477,4 @@ if st.session_state['analyzed']:
 else:
 
         st.error("有効なデータが作成されませんでした。ログを確認してください。")
+
