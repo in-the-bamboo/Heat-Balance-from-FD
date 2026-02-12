@@ -456,7 +456,7 @@ if st.session_state['analyzed']:
             st.pyplot(fig)
             
             col1, col2 = st.columns(2)
-            if "暖房"　in mode:
+            if "暖房" in mode:
                 label_left = "各室熱損失合計"
                 label_right = "投入熱量"
             else:
@@ -495,6 +495,7 @@ if st.session_state['analyzed']:
 else:
 
         st.error("有効なデータが作成されませんでした。ログを確認してください。")
+
 
 
 
