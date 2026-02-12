@@ -151,7 +151,7 @@ def process_cfd_files(master_file, cfd_files, rho, cp, threshold):
 
     return results_df, room_heat_summary_df, room_flow_summary_df, logs
 
-def create_heat_chart(room_heat_summary_df, fig_width, fig_height, font_size, y_max, custom_colors, show_legend, category_map):
+def create_heat_chart(room_heat_summary_df, fig_width, fig_height, font_size, y_max, custom_colors, show_legend, category_map, mode):
     # --- データ準備 ---
     if "暖房" in mode:
         label_passive = "各室熱損失"
@@ -495,6 +495,7 @@ if st.session_state['analyzed']:
 else:
 
         st.error("有効なデータが作成されませんでした。ログを確認してください。")
+
 
 
 
