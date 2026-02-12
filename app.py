@@ -153,12 +153,12 @@ def process_cfd_files(master_file, cfd_files, rho, cp, threshold):
 
 def create_heat_chart(room_heat_summary_df, fig_width, fig_height, font_size, y_max, custom_colors, show_legend, category_map):
     # --- データ準備 ---
-   if "暖房" in mode:
+    if "暖房" in mode:
         label_passive = "各室熱損失"
         label_active = "投入熱量"
         passive = room_heat_summary_df[room_heat_summary_df['処理熱量[W]'] < 0].set_index('室名')['処理熱量[W]'].abs()
         active = room_heat_summary_df[room_heat_summary_df['処理熱量[W]'] > 0].set_index('室名')['処理熱量[W]']
-   else: 
+    else: 
         label_passive = "各室負荷"
         label_active = "処理熱量"
         passive = room_heat_summary_df[room_heat_summary_df['処理熱量[W]'] > 0].set_index('室名')['処理熱量[W]']
@@ -495,6 +495,7 @@ if st.session_state['analyzed']:
 else:
 
         st.error("有効なデータが作成されませんでした。ログを確認してください。")
+
 
 
 
