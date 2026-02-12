@@ -153,10 +153,19 @@ def process_cfd_files(master_file, cfd_files, rho, cp, threshold):
 
 def create_heat_chart(room_heat_summary_df, fig_width, fig_height, font_size, y_max, custom_colors, show_legend, category_map):
     # --- データ準備 ---
-    pos_data = room_heat_summary_df[room_heat_summary_df['処理熱量[W]'] > 0].set_index('室名')['処理熱量[W]']
-    neg_data = room_heat_summary_df[room_heat_summary_df['処理熱量[W]'] < 0].set_index('室名')['処理熱量[W]'].abs()
+   if "暖房" in mode:
+        label_passive = "各室熱損失"
+        label_active = "投入熱量"
+        passive = room_heat_summary_df[room_heat_summary_df['処理熱量[W]'] < 0].set_index('室名')['処理熱量[W]'].abs()
+        active = room_heat_summary_df[room_heat_summary_df['処理熱量[W]'] > 0].set_index('室名')['処理熱量[W]']
 
-    plot_df_base = pd.DataFrame({'各室': pos_data, 'エアコン': neg_data}).T.fillna(0)
+    else:
+        label_passive = "各室負荷"
+        label_active = "処理熱量"
+        passive = room_heat_summary_df[room_heat_summary_df['処理熱量[W]'] > 0].set_index('室名')['処理熱量[W]']
+        active = room_heat_summary_df[room_heat_summary_df['処理熱量[W]'] < 0].set_index('室名')['処理熱量[W]'].abs
+        
+    plot_df_base = pd.DataFrame({label_passive: passive , label_active: active}).T.fillna(0)
 
     # --- 並べ替えロジック (引数の category_map を使用) ---
     # マップ内のリストを展開して、並べ替え順序リストを作成
@@ -261,12 +270,16 @@ st.markdown("FlowDesignerでCSV出力した開口部やエアコンの吹出・�
 
 # --- サイドバー設定 ---
 with st.sidebar:
-    st.header("1. 定数設定")
+    st.header("1. 解析設定")
+    mode = st.radio("モード, ["冷房","暖房"])
+    st.divider()
+    
+    st.header("2. 定数設定")
     rho = st.number_input("空気密度 ρ [kg/m3]", value=1.20)
     cp = st.number_input("比熱 Cp [J/g・K]", value=1.006, format="%.3f")
     threshold = st.number_input("風量収支許容誤差 [m3/h]", value=1.0)
     
-    st.header("2. 分析ファイル")
+    st.header("3. 分析ファイル")
     st.info("マスタファイル (各室の位置関係を記述したファイル)をドラッグ＆ドロップまたはブラウズ")
     master_file = st.file_uploader("マスタファイル", type="csv")
     st.markdown("---")
@@ -437,15 +450,21 @@ if st.session_state['analyzed']:
         # --- グラフ描画実行 ---
         try:
             # 引数に custom_category_map を追加
-            fig, total_pos, total_neg = create_heat_chart(
-                room_heat_df, fig_w, fig_h, font_size, y_max, custom_colors, show_legend, custom_category_map
+            fig, total_passive, total_active = create_heat_chart(
+                room_heat_df, fig_w, fig_h, font_size, y_max, custom_colors, show_legend, custom_category_map, mode
             )
             
             st.pyplot(fig)
             
             col1, col2 = st.columns(2)
-            col1.metric("各室負荷合計 (Bar左)", f"{total_pos:,.1f} W")
-            col2.metric("処理熱量合計 (Bar右)", f"{total_neg:,.1f} W")
+            if "暖房"　in mode:
+                label_left = "各室熱損失合計"
+                label_right = "投入熱量"
+            else:
+                label_left = "各室熱負荷合計"
+                label_right = "処理熱量"
+            col1.metric(label_left, f"{total_passive:,.1f} W")
+            col2.metric(label_right, f"{total_active:,.1f} W")
             
             # 画像ダウンロード
             img = io.BytesIO()
@@ -477,5 +496,6 @@ if st.session_state['analyzed']:
 else:
 
         st.error("有効なデータが作成されませんでした。ログを確認してください。")
+
 
 
