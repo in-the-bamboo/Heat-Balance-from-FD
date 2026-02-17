@@ -268,6 +268,10 @@ st.title("CFD 熱量分配 & 風量バランス分析")
 st.markdown("FlowDesignerでCSV出力した開口部やエアコンの吹出・吸込口の温度・速度から処理熱量を部屋ごとに集計するツールです")
 
 # --- サイドバー設定 ---
+
+if 'uploader_key' not in st.session_state:
+    st.session_state['uploader_key'] = 0
+        
 with st.sidebar:
     st.header("1. 解析設定")
     mode = st.radio("モード", ["冷房", "暖房"])
@@ -291,9 +295,6 @@ with st.sidebar:
         accept_multiple_files=True,
         key = f"cfd_uploader_{st.session_state['uploader_key']}"
     )
-
-    if 'uploader_key' not in st.session_state:
-        st.session_state['uploader_key'] = 0
 
     def reset_files():
         st.session_state['uploader_key'] += 1
@@ -514,6 +515,7 @@ if st.session_state['analyzed']:
 else:
 
         st.error("有効なデータが作成されませんでした。ログを確認してください。")
+
 
 
 
