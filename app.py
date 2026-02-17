@@ -282,8 +282,26 @@ with st.sidebar:
     st.info("マスタファイル (各室の位置関係を記述したファイル)をドラッグ＆ドロップまたはブラウズ")
     master_file = st.file_uploader("マスタファイル", type="csv")
     st.markdown("---")
+
+    #クリアボタン
+    if 'uploader_key' not in st.session_state:
+        st.session_state['uploader_key'] = 0
+
+    def reset_files():
+        st.session_state['uploader_key'] += 1
+        st.session_state['analyzed'] = False
+
+    if st.button("リセット"):
+        reset_files()
+        st.rerun()
+
     st.info("FDで書きだした開口部のCSVを全てドラッグ＆ドロップまたはブラウズ")
-    cfd_files = st.file_uploader("CFD解析結果 (複数選択)", type="csv", accept_multiple_files=True)
+    cfd_files = st.file_uploader(
+        "CFD解析結果 (複数選択)",
+        type="csv",
+        accept_multiple_files=True,
+        key = f"cfd_uploader_{st.session_state['uploader_key']}"
+    )
 
 # --- メイン処理 ---
 
@@ -495,6 +513,7 @@ if st.session_state['analyzed']:
 else:
 
         st.error("有効なデータが作成されませんでした。ログを確認してください。")
+
 
 
 
