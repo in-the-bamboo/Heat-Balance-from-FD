@@ -284,6 +284,14 @@ with st.sidebar:
     st.markdown("---")
 
     #クリアボタン
+    st.info("FDで書きだした開口部のCSVを全てドラッグ＆ドロップまたはブラウズ")
+    cfd_files = st.file_uploader(
+        "CFD解析結果 (複数選択)",
+        type="csv",
+        accept_multiple_files=True,
+        key = f"cfd_uploader_{st.session_state['uploader_key']}"
+    )
+
     if 'uploader_key' not in st.session_state:
         st.session_state['uploader_key'] = 0
 
@@ -295,13 +303,6 @@ with st.sidebar:
         reset_files()
         st.rerun()
 
-    st.info("FDで書きだした開口部のCSVを全てドラッグ＆ドロップまたはブラウズ")
-    cfd_files = st.file_uploader(
-        "CFD解析結果 (複数選択)",
-        type="csv",
-        accept_multiple_files=True,
-        key = f"cfd_uploader_{st.session_state['uploader_key']}"
-    )
 
 # --- メイン処理 ---
 
@@ -513,6 +514,7 @@ if st.session_state['analyzed']:
 else:
 
         st.error("有効なデータが作成されませんでした。ログを確認してください。")
+
 
 
 
